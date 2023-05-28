@@ -1,0 +1,36 @@
+package com.shakil.app
+
+class Member {
+    Integer id
+    String firstName
+    String lastName
+    String email
+    String password
+    String memberRole = GlobalConfig.USER_ROLE.REGULAR_MEMBER
+    String identityHash
+    Long identityHashLastUpdate
+    Boolean isActive = true
+
+    Date dateCreated
+    Date lastUpdated
+
+    static constraints = {
+        email(email: true,nullable: false, unique: true, blank: false)
+        password(blank: false)
+        lastName(nullable: false)
+        identityHash(nullable: true)
+        identityHashLastUpdate(nullable: true)
+    }
+
+    def beforeInsert(){
+        this.password = this.password.encodeAsMD5()
+    }
+
+    def beforeUpdate(){
+        this.password = this.password.encodeAsMD5()
+    }
+
+    static mappedBy = {
+        version(false)
+    }
+}
